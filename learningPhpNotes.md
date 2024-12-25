@@ -70,13 +70,13 @@ echo $message;
 
 ---
 
-## Part 4: Arrays and Loops
+## Part 4: Advanced Arrays and Filtering
 
-- **Goal:** Display a list of recommended books.
+- **Goal:** Filter and display book details dynamically.
 - **Concepts Covered:**
-  - Defining an array with multiple values.
-  - Iterating over an array with a `foreach` loop.
-  - Generating HTML dynamically using PHP.
+  - Multi-dimensional arrays.
+  - Custom filtering with functions.
+  - Dynamic HTML rendering with secure output.
 
 ### Example Code:
 
@@ -85,26 +85,45 @@ echo $message;
 $books = [
   [
     'name' => 'Do Androids Dream Of Electric Sheep',
-    'author' => 'Philip K. Dick',
-    'purchaseUrl' => 'https://google.com'
+    'author' => 'Philip K',
+    'purchaseUrl' => 'https://google.com',
+    'description' => 'A science fiction novel about androids and humanity.',
+    'imageUrl' => 'https://example.com/book1.jpg'
   ],
   [
     'name' => 'The Langoliers',
     'author' => 'Stephen King',
-    'purchaseUrl' => 'https://google.com'
+    'purchaseUrl' => 'https://google.com',
+    'description' => 'A horror novel with time travel and suspense.',
+    'imageUrl' => 'https://example.com/book2.jpg'
   ]
 ];
+
+function filter($items, $key, $value) {
+  $filteredItems = [];
+  foreach ($items as $item) {
+    if ($item[$key] === $value) {
+      $filteredItems[] = $item;
+    }
+  }
+  return $filteredItems;
+}
+
+$filteredBooks = filter($books, 'author', 'Stephen King');
 ?>
 
-<ul>
-  <?php foreach ($books as $book): ?>
-    <li>
+<div class="book-list">
+  <?php foreach ($filteredBooks as $book): ?>
+    <div class="book-item">
       <h2><?= htmlspecialchars($book['name']); ?></h2>
-      <b><?= htmlspecialchars($book['author']); ?></b>
-      <a href="<?= htmlspecialchars($book['purchaseUrl']); ?>" target="_blank">Go</a>
-    </li>
+      <p><strong>Author:</strong> <?= htmlspecialchars($book['author']); ?></p>
+      <p><strong>Description:</strong> <?= htmlspecialchars($book['description']); ?></p>
+      <img src="<?= htmlspecialchars($book['imageUrl']); ?>" alt="<?= htmlspecialchars($book['name']); ?>" />
+      <a href="<?= htmlspecialchars($book['purchaseUrl']); ?>" target="_blank">Purchase</a>
+    </div>
   <?php endforeach; ?>
-</ul>
-```
+</div>
+
 
 ---
+```
